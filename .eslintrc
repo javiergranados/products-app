@@ -1,0 +1,27 @@
+{
+  "parser": "@typescript-eslint/parser", // specifies the ESLint parser
+  "parserOptions": {
+    "ecmaVersion": 2020, // allows the parsing of modern ECMAScript features
+    "sourceType": "module", // allows the use of imports
+    "ecmaFeatures": {
+      "jsx": true // allows the parsing of JSX
+    }
+  },
+  "plugins": ["promise"],
+  "settings": {
+    "react": {
+      "version": "detect" // detects automatically the version of React to use
+    }
+  },
+  "extends": [
+    "plugin:react/recommended", // uses the recommended rules from @eslint-plugin-react
+    "plugin:@react-native-community", // uses the recommended rules from @react-native-community/eslint-config
+    "prettier/@typescript-eslint", // uses eslint-config-prettier to disable ESLint rules that would conflict with prettier
+    "plugin:prettier/recommended" // enables eslint-plugin-prettier and eslint-config-prettier. This will display prettier errors as ESLint errors.
+  ],
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
+    "promise/catch-or-return": "off"
+  }
+}
