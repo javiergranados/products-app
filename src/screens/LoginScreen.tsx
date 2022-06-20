@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 
-const ProductsScreen = () => {
+const LoginScreen = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Products screen</Text>
+      <Text style={styles.title}>Login screen</Text>
     </View>
   );
 };
@@ -18,4 +18,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProductsScreen;
+export default LoginScreen;

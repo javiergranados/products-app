@@ -1,8 +1,13 @@
 import React from 'react';
-import ProductsScreen from './src/screens/ProductsScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import StackNavigator from './src/navigators/StackNavigator';
 
 const App = () => {
-  return <ProductsScreen />;
+  return (
+    <NavigationContainer>
+      <StackNavigator />
+    </NavigationContainer>
+  );
 };
 
 export default App;
