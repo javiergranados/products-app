@@ -8,6 +8,16 @@ const loginStyles = StyleSheet.create({
     height: 600,
     marginBottom: 50,
   },
+  fixedButton: {
+    position: 'absolute',
+    top: 50,
+    left: 20,
+    borderWidth: 1,
+    borderColor: 'white',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 100,
+  },
   title: {
     color: 'white',
     fontSize: 30,
