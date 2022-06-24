@@ -4,6 +4,8 @@ import { authReducer } from './AuthReducer';
 import { LoginData, LoginResponse } from '../../interfaces/login';
 import coffeeApi from '../../api/coffeeApi';
 
+const GENERIC_ERROR_TEXT = 'Ha ocurrido un error';
+
 export const AuthContext = createContext({} as AuthContextProps);
 
 const PERMISSIONS_INITIAL_STATE: AuthState = {
@@ -21,13 +23,14 @@ export const AuthProvider = ({ children }: any) => {
       const response = await coffeeApi.post<LoginResponse>('/auth/login', { correo, password });
       dispatch({ type: 'LOG_IN', payload: { token: response.data.token, user: response.data.usuario } });
     } catch (error: any) {
-      console.log(error.response.data.msg);
+      const msg: string = error.response.data.msg || GENERIC_ERROR_TEXT;
+      addError(msg);
     }
   };
 
-  const addError = () => {};
+  const addError = (msg: string) => dispatch({ type: 'ADD_ERROR', payload: msg });
 
-  const removeError = () => {};
+  const removeError = () => dispatch({ type: 'REMOVE_ERROR' });
 
   const logOut = () => {};
 

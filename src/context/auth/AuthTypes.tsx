@@ -9,7 +9,7 @@ export interface AuthState {
 
 export interface AuthContextProps extends AuthState {
   logIn: (loginData: LoginData) => void;
-  addError: () => void;
+  addError: (msg: string) => void;
   removeError: () => void;
   logOut: () => void;
 }

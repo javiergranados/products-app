@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { Keyboard, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useContext, useEffect } from 'react';
+import { Alert, Keyboard, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Background } from '../components/Background';
 import { Logo } from '../components/Logo';
 import { useForm } from '../hooks/useForm';
@@ -11,7 +11,7 @@ import { AuthContext } from '../context';
 interface Props extends StackScreenProps<RootStackParamList, 'LoginScreen'> {}
 
 const LoginScreen = ({ navigation }: Props) => {
-  const { logIn } = useContext(AuthContext);
+  const { logIn, removeError, errorMessage } = useContext(AuthContext);
 
   const { email, password, onChange } = useForm({
     email: '',
@@ -26,6 +26,11 @@ const LoginScreen = ({ navigation }: Props) => {
   const navigateToRegister = () => {
     navigation.replace('RegisterScreen');
   };
+
+  useEffect(() => {
+    if (!errorMessage.length) return;
+    Alert.alert('Login incorrecto', errorMessage, [{ text: 'Accept', onPress: removeError }]);
+  }, [errorMessage]);
 
   return (
     <>
