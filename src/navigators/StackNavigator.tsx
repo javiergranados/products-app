@@ -4,6 +4,7 @@ import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import ProtectedScreen from '../screens/ProtectedScreen';
 import { AuthContext } from '../context';
+import { LoadingScreen } from '../screens/LoadingScreen';
 
 export type RootStackParamList = {
   LoginScreen: undefined;
@@ -16,6 +17,9 @@ const RootStack = createStackNavigator<RootStackParamList>();
 const StackNavigator = () => {
   const { status } = useContext(AuthContext);
 
+  if (status === 'checking') {
+    return <LoadingScreen />;
+  }
   return (
     <RootStack.Navigator
       screenOptions={{
