@@ -29,7 +29,7 @@ const LoginScreen = ({ navigation }: Props) => {
 
   useEffect(() => {
     if (!errorMessage.length) return;
-    Alert.alert('Login incorrecto', errorMessage, [{ text: 'Accept', onPress: removeError }]);
+    Alert.alert('Error', errorMessage, [{ text: 'Accept', onPress: removeError }]);
   }, [errorMessage]);
 
   return (

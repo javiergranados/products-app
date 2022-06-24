@@ -6,7 +6,7 @@ import { LoginData, LoginResponse } from '../../interfaces/login';
 import { RegisterData, RegisterResponse } from '../../interfaces/register';
 import coffeeApi from '../../api/coffeeApi';
 
-const GENERIC_ERROR_TEXT = 'Ha ocurrido un error';
+const GENERIC_ERROR_TEXT = 'Unexpected error';
 
 export const AuthContext = createContext({} as AuthContextProps);
 
