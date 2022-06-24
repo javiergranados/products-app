@@ -1,14 +1,17 @@
-import React from 'react';
-import { Keyboard, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useContext, useEffect } from 'react';
+import { Alert, Keyboard, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Logo } from '../components/Logo';
 import { useForm } from '../hooks/useForm';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigators/StackNavigator';
 import { loginStyles } from '../theme/loginTheme';
+import { AuthContext } from '../context';
 
 interface Props extends StackScreenProps<RootStackParamList, 'RegisterScreen'> {}
 
 const RegisterScreen = ({ navigation }: Props) => {
+  const { signUp, removeError, errorMessage } = useContext(AuthContext);
+
   const { email, password, name, onChange } = useForm({
     name: '',
     email: '',
@@ -16,13 +19,18 @@ const RegisterScreen = ({ navigation }: Props) => {
   });
 
   const handleRegister = () => {
-    console.log({ name, email, password });
+    signUp({ correo: email, password, nombre: name });
     Keyboard.dismiss();
   };
 
   const navigateToLogin = () => {
     navigation.replace('LoginScreen');
   };
+
+  useEffect(() => {
+    if (!errorMessage.length) return;
+    Alert.alert('Error', errorMessage, [{ text: 'Accept', onPress: removeError }]);
+  }, [errorMessage]);
 
   return (
     <KeyboardAvoidingView

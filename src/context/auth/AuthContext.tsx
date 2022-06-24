@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthState, AuthContextProps } from './AuthTypes';
 import { authReducer } from './AuthReducer';
 import { LoginData, LoginResponse } from '../../interfaces/login';
+import { RegisterData, RegisterResponse } from '../../interfaces/register';
 import coffeeApi from '../../api/coffeeApi';
 
 const GENERIC_ERROR_TEXT = 'Ha ocurrido un error';
@@ -22,6 +23,18 @@ export const AuthProvider = ({ children }: any) => {
   const logIn = async ({ correo, password }: LoginData) => {
     try {
       const response = await coffeeApi.post<LoginResponse>('/auth/login', { correo, password });
+      dispatch({ type: 'LOG_IN', payload: { token: response.data.token, user: response.data.usuario } });
+
+      await AsyncStorage.setItem('token', response.data.token);
+    } catch (error: any) {
+      const msg: string = error.response.data.msg || GENERIC_ERROR_TEXT;
+      addError(msg);
+    }
+  };
+
+  const signUp = async ({ correo, password, nombre }: RegisterData) => {
+    try {
+      const response = await coffeeApi.post<RegisterResponse>('/usuarios', { correo, password, nombre });
       dispatch({ type: 'LOG_IN', payload: { token: response.data.token, user: response.data.usuario } });
 
       await AsyncStorage.setItem('token', response.data.token);
@@ -64,6 +77,7 @@ export const AuthProvider = ({ children }: any) => {
       value={{
         ...state,
         logIn,
+        signUp,
         addError,
         removeError,
         logOut,

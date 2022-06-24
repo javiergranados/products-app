@@ -1,4 +1,5 @@
 import { LoginData, Usuario } from '../../interfaces/login';
+import { RegisterData } from '../../interfaces/register';
 
 export interface AuthState {
   user: Usuario | null;
@@ -9,6 +10,7 @@ export interface AuthState {
 
 export interface AuthContextProps extends AuthState {
   logIn: (loginData: LoginData) => void;
+  signUp: (registerData: RegisterData) => void;
   addError: (msg: string) => void;
   removeError: () => void;
   logOut: () => void;
