@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import ProtectedScreen from '../screens/ProtectedScreen';
+import { AuthContext } from '../context';
 
 export type RootStackParamList = {
   LoginScreen: undefined;
@@ -13,6 +14,8 @@ export type RootStackParamList = {
 const RootStack = createStackNavigator<RootStackParamList>();
 
 const StackNavigator = () => {
+  const { status } = useContext(AuthContext);
+
   return (
     <RootStack.Navigator
       screenOptions={{
@@ -22,9 +25,14 @@ const StackNavigator = () => {
         },
       }}
     >
-      <RootStack.Screen name="LoginScreen" component={LoginScreen} />
-      <RootStack.Screen name="RegisterScreen" component={RegisterScreen} />
-      <RootStack.Screen name="ProtectedScreen" component={ProtectedScreen} />
+      {status === 'authenticated' ? (
+        <RootStack.Screen name="ProtectedScreen" component={ProtectedScreen} />
+      ) : (
+        <>
+          <RootStack.Screen name="LoginScreen" component={LoginScreen} />
+          <RootStack.Screen name="RegisterScreen" component={RegisterScreen} />
+        </>
+      )}
     </RootStack.Navigator>
   );
 };

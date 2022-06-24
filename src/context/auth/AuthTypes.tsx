@@ -1,4 +1,4 @@
-import { Usuario } from '@/src/interfaces/login';
+import { LoginData, Usuario } from '../../interfaces/login';
 
 export interface AuthState {
   user: Usuario | null;
@@ -8,7 +8,7 @@ export interface AuthState {
 }
 
 export interface AuthContextProps extends AuthState {
-  logIn: () => void;
+  logIn: (loginData: LoginData) => void;
   addError: () => void;
   removeError: () => void;
   logOut: () => void;
