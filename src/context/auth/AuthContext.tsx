@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }: any) => {
 
       await AsyncStorage.setItem('token', response.data.token);
     } catch (error: any) {
-      const msg: string = error.response.data.msg || GENERIC_ERROR_TEXT;
+      const msg: string = error.response.data.errors[0].msg || GENERIC_ERROR_TEXT;
       addError(msg);
     }
   };
