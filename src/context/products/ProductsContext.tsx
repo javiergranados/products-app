@@ -1,7 +1,8 @@
-import React, { createContext, useReducer } from 'react';
+import React, { createContext, useEffect, useReducer } from 'react';
 import { ProductsState, ProductsContextProps } from './ProductsTypes';
 import { productsReducer } from './ProductsReducer';
-import { Producto } from '../../interfaces/products';
+import { Producto, ProductsResponse } from '../../interfaces/products';
+import coffeeApi from '../../api/coffeeApi';
 
 export const ProductsContext = createContext({} as ProductsContextProps);
 
@@ -10,9 +11,12 @@ const PRODUCTS_INITIAL_STATE: ProductsState = {
 };
 
 export const ProductsProvider = ({ children }: any) => {
-  const [state] = useReducer(productsReducer, PRODUCTS_INITIAL_STATE);
+  const [state, dispatch] = useReducer(productsReducer, PRODUCTS_INITIAL_STATE);
 
-  const loadProducts = async () => {};
+  const loadProducts = async () => {
+    const response = await coffeeApi.get<ProductsResponse>('/productos?limite=50');
+    dispatch({ type: 'LOAD_PRODUCTS', payload: response.data.productos });
+  };
 
   const addProduct = async (product: Producto) => {};
 
@@ -25,6 +29,10 @@ export const ProductsProvider = ({ children }: any) => {
   };
 
   const uploadImage = async (productId: string, data: any) => {};
+
+  useEffect(() => {
+    loadProducts();
+  }, []);
 
   return (
     <ProductsContext.Provider
