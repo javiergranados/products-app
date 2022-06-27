@@ -5,10 +5,12 @@ import RegisterScreen from '../screens/RegisterScreen';
 import ProtectedScreen from '../screens/ProtectedScreen';
 import { AuthContext } from '../context';
 import { LoadingScreen } from '../screens/LoadingScreen';
+import ProductsNavigator from './ProductsNavigator';
 
 export type RootStackParamList = {
   LoginScreen: undefined;
   RegisterScreen: undefined;
+  ProductsNavigator: undefined;
   ProtectedScreen: undefined;
 };
 
@@ -30,7 +32,10 @@ const StackNavigator = () => {
       }}
     >
       {status === 'authenticated' ? (
-        <RootStack.Screen name="ProtectedScreen" component={ProtectedScreen} />
+        <>
+          <RootStack.Screen name="ProductsNavigator" component={ProductsNavigator} />
+          <RootStack.Screen name="ProtectedScreen" component={ProtectedScreen} />
+        </>
       ) : (
         <>
           <RootStack.Screen name="LoginScreen" component={LoginScreen} />
