@@ -1,12 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
+import { Picker } from '@react-native-picker/picker';
 import { ProductsStackParamList } from '../navigators/ProductsNavigator';
+import { useCategories } from '../hooks/useCategories';
 
 interface Props extends StackScreenProps<ProductsStackParamList, 'ProductScreen'> {}
 
 const ProductScreen = ({ route, navigation }: Props) => {
-  const { id, name } = route.params;
+  const { name } = route.params;
+  const { categories } = useCategories();
+
+  const [selectedCategory, setSelectedCategory] = useState<string>();
+
+  const categoryOptions = categories.map((c) => <Picker.Item key={c._id} value={c._id} label={c.nombre} />);
 
   const handleSave = () => {};
 
@@ -22,6 +29,9 @@ const ProductScreen = ({ route, navigation }: Props) => {
         <Text style={styles.label}>Product name:</Text>
         <TextInput placeholder="Product" style={styles.textInput} />
         <Text style={styles.label}>Category:</Text>
+        <Picker selectedValue={selectedCategory} onValueChange={setSelectedCategory}>
+          {categoryOptions}
+        </Picker>
         <Button title="Save" onPress={handleSave} color="#5856D6" />
         <View style={styles.buttonsContainer}>
           <Button title="Camera" color="#5856D6" />
