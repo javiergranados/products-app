@@ -19,7 +19,10 @@ export const ProductsProvider = ({ children }: any) => {
   };
 
   const addProduct = async (productName: string, categoryId: string) => {
-    console.log({ productName, categoryId });
+    const response = await coffeeApi.post<Producto>('/productos', { nombre: productName, categoria: categoryId });
+    dispatch({ type: 'ADD_PRODUCT', payload: response.data });
+
+    return response.data;
   };
 
   const updateProduct = async (productId: string, productName: string, categoryId: string) => {

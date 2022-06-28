@@ -6,18 +6,20 @@ import { ProductsStackParamList } from '../navigators/ProductsNavigator';
 import { ProductsContext } from '../context';
 import { useCategories } from '../hooks/useCategories';
 import { useForm } from '../hooks/useForm';
+import { Producto } from '../interfaces/products';
 
 interface Props extends StackScreenProps<ProductsStackParamList, 'ProductScreen'> {}
 
 const ProductScreen = ({ route, navigation }: Props) => {
   const { categories } = useCategories();
-  const { id = '', name: nameFromParams = '' } = route.params;
+  const { id: idFromParams = '', name: nameFromParams = '' } = route.params;
 
   const { loadProductById, addProduct, updateProduct } = useContext(ProductsContext);
 
-  const { categoryId, name, img, onChange, setFormValue } = useForm({
-    categoryId: '',
+  const { id, name, categoryId, img, onChange, setFormValue } = useForm({
+    id: idFromParams,
     name: nameFromParams,
+    categoryId: '',
     img: '',
   });
 
@@ -30,18 +32,20 @@ const ProductScreen = ({ route, navigation }: Props) => {
 
     const product = await loadProductById(id);
     setFormValue({
+      id,
       name,
       categoryId: product.categoria._id,
       img: product.img || '',
     });
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (id.length > 0) {
       updateProduct(id, name, categoryId);
       return;
     }
-    addProduct(name, categoryId);
+    const newProduct: Producto = await addProduct(name, categoryId);
+    onChange(newProduct._id, 'id');
   };
 
   useEffect(() => {
