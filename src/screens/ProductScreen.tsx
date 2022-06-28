@@ -10,12 +10,12 @@ import { useForm } from '../hooks/useForm';
 interface Props extends StackScreenProps<ProductsStackParamList, 'ProductScreen'> {}
 
 const ProductScreen = ({ route, navigation }: Props) => {
+  const { categories } = useCategories();
   const { id = '', name: nameFromParams = '' } = route.params;
 
-  const { loadProductById } = useContext(ProductsContext);
-  const { categories } = useCategories();
+  const { loadProductById, addProduct, updateProduct } = useContext(ProductsContext);
 
-  const { categoryId, name, img, onChange } = useForm({
+  const { categoryId, name, img, onChange, setFormValue } = useForm({
     categoryId: '',
     name: nameFromParams,
     img: '',
@@ -29,20 +29,35 @@ const ProductScreen = ({ route, navigation }: Props) => {
     }
 
     const product = await loadProductById(id);
-    onChange(product.categoria._id, 'categoryId');
-    onChange(product.img || '', 'img');
+    setFormValue({
+      name,
+      categoryId: product.categoria._id,
+      img: product.img || '',
+    });
   };
 
-  const handleSave = () => {};
-
-  useEffect(() => {
-    loadProduct();
-  }, []);
+  const handleSave = () => {
+    if (id.length > 0) {
+      updateProduct(id, name, categoryId);
+      return;
+    }
+    addProduct(name, categoryId);
+  };
 
   useEffect(() => {
     navigation.setOptions({
-      title: name ? name : 'New Product',
+      title: name ? name : 'Product name',
     });
+  }, [name]);
+
+  useEffect(() => {
+    if (categories.length > 0) {
+      onChange(categories[0]._id, 'categoryId');
+    }
+  }, [categories]);
+
+  useEffect(() => {
+    loadProduct();
   }, []);
 
   return (
@@ -60,11 +75,13 @@ const ProductScreen = ({ route, navigation }: Props) => {
           {categoryOptions}
         </Picker>
         <Button title="Save" onPress={handleSave} color="#5856D6" />
-        <View style={styles.buttonsContainer}>
-          <Button title="Camera" color="#5856D6" />
-          <View style={{ width: 10 }} />
-          <Button title="Gallery" color="#5856D6" />
-        </View>
+        {id.length > 0 && (
+          <View style={styles.buttonsContainer}>
+            <Button title="Camera" color="#5856D6" />
+            <View style={{ width: 10 }} />
+            <Button title="Gallery" color="#5856D6" />
+          </View>
+        )}
         {img.length > 0 && <Image source={{ uri: img }} style={{ width: '100%', height: 300 }} />}
       </ScrollView>
     </View>

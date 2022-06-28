@@ -18,9 +18,13 @@ export const ProductsProvider = ({ children }: any) => {
     dispatch({ type: 'LOAD_PRODUCTS', payload: response.data.productos });
   };
 
-  const addProduct = async (product: Producto) => {};
+  const addProduct = async (productName: string, categoryId: string) => {
+    console.log({ productName, categoryId });
+  };
 
-  const updateProduct = async (productId: string, productName: string, categoryId: string) => {};
+  const updateProduct = async (productId: string, productName: string, categoryId: string) => {
+    console.log({ productId, productName, categoryId });
+  };
 
   const deleteProduct = async (productId: string) => {};
 

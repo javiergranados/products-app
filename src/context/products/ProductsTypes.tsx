@@ -6,7 +6,7 @@ export interface ProductsState {
 
 export interface ProductsContextProps extends ProductsState {
   loadProducts: () => Promise<void>;
-  addProduct: (product: Producto) => Promise<void>;
+  addProduct: (productName: string, categoryId: string) => Promise<void>;
   updateProduct: (productId: string, productName: string, categoryId: string) => Promise<void>;
   deleteProduct: (productId: string) => Promise<void>;
   loadProductById: (productId: string) => Promise<Producto>;
