@@ -18,5 +18,4 @@ export type ProductsActions =
   | { type: 'ADD_PRODUCT'; payload: Producto }
   | { type: 'UPDATE_PRODUCT' }
   | { type: 'DELETE_PRODUCT' }
-  | { type: 'LOAD_PRODUCT_BY_ID' }
   | { type: 'UPLOAD_IMAGE' };

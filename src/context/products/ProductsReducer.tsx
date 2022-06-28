@@ -20,10 +20,6 @@ const productsReducer = (state: ProductsState, action: ProductsActions): Product
       return {
         ...state,
       };
-    case 'LOAD_PRODUCT_BY_ID':
-      return {
-        ...state,
-      };
     case 'UPLOAD_IMAGE':
       return {
         ...state,

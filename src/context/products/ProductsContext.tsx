@@ -25,7 +25,8 @@ export const ProductsProvider = ({ children }: any) => {
   const deleteProduct = async (productId: string) => {};
 
   const loadProductById = async (productId: string) => {
-    throw new Error('not implemented');
+    const response = await coffeeApi.get<Producto>(`/productos/${productId}`);
+    return response.data;
   };
 
   const uploadImage = async (productId: string, data: any) => {};
