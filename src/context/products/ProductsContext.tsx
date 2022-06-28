@@ -37,8 +37,6 @@ export const ProductsProvider = ({ children }: any) => {
     return response.data;
   };
 
-  const deleteProduct = async (productId: string) => {};
-
   const loadProductById = async (productId: string) => {
     const response = await coffeeApi.get<Producto>(`/productos/${productId}`);
     return response.data;
@@ -57,7 +55,6 @@ export const ProductsProvider = ({ children }: any) => {
         loadProducts,
         addProduct,
         updateProduct,
-        deleteProduct,
         loadProductById,
         uploadImage,
       }}

@@ -17,10 +17,6 @@ const productsReducer = (state: ProductsState, action: ProductsActions): Product
         ...state,
         products: action.payload,
       };
-    case 'DELETE_PRODUCT':
-      return {
-        ...state,
-      };
     case 'UPLOAD_IMAGE':
       return {
         ...state,
