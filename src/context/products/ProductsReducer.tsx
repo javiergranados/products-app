@@ -15,6 +15,7 @@ const productsReducer = (state: ProductsState, action: ProductsActions): Product
     case 'UPDATE_PRODUCT':
       return {
         ...state,
+        products: action.payload,
       };
     case 'DELETE_PRODUCT':
       return {

@@ -26,7 +26,15 @@ export const ProductsProvider = ({ children }: any) => {
   };
 
   const updateProduct = async (productId: string, productName: string, categoryId: string) => {
-    console.log({ productId, productName, categoryId });
+    const response = await coffeeApi.put<Producto>(`/productos/${productId}`, {
+      nombre: productName,
+      categoria: categoryId,
+    });
+
+    const productsFiltered = state.products.filter((p) => p._id !== response.data._id);
+    dispatch({ type: 'UPDATE_PRODUCT', payload: [...productsFiltered, response.data] });
+
+    return response.data;
   };
 
   const deleteProduct = async (productId: string) => {};

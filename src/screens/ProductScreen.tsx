@@ -41,9 +41,16 @@ const ProductScreen = ({ route, navigation }: Props) => {
 
   const handleSave = async () => {
     if (id.length > 0) {
-      updateProduct(id, name, categoryId);
+      const productUpdated: Producto = await updateProduct(id, name, categoryId);
+      setFormValue({
+        id: productUpdated._id,
+        name: productUpdated.nombre,
+        categoryId: productUpdated.categoria._id,
+        img: productUpdated.img || '',
+      });
       return;
     }
+
     const newProduct: Producto = await addProduct(name, categoryId);
     onChange(newProduct._id, 'id');
   };
@@ -55,7 +62,7 @@ const ProductScreen = ({ route, navigation }: Props) => {
   }, [name]);
 
   useEffect(() => {
-    if (categories.length > 0) {
+    if (categories.length > 0 && id.length === 0) {
       onChange(categories[0]._id, 'categoryId');
     }
   }, [categories]);
