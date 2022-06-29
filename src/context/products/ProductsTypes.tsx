@@ -16,5 +16,4 @@ export interface ProductsContextProps extends ProductsState {
 export type ProductsActions =
   | { type: 'LOAD_PRODUCTS'; payload: Producto[] }
   | { type: 'ADD_PRODUCT'; payload: Producto }
-  | { type: 'UPDATE_PRODUCT'; payload: Producto[] }
-  | { type: 'UPLOAD_IMAGE' };
+  | { type: 'UPDATE_PRODUCT'; payload: Producto[] };
