@@ -1,7 +1,8 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, Image, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { Picker } from '@react-native-picker/picker';
+import { launchCamera } from 'react-native-image-picker';
 import { ProductsStackParamList } from '../navigators/ProductsNavigator';
 import { ProductsContext } from '../context';
 import { useCategories } from '../hooks/useCategories';
@@ -16,6 +17,7 @@ const ProductScreen = ({ route, navigation }: Props) => {
 
   const { loadProductById, addProduct, updateProduct } = useContext(ProductsContext);
 
+  const [tempImg, setTempImg] = useState<string>('');
   const { id, name, categoryId, img, onChange, setFormValue } = useForm({
     id: idFromParams,
     name: nameFromParams,
@@ -37,6 +39,21 @@ const ProductScreen = ({ route, navigation }: Props) => {
       categoryId: product.categoria._id,
       img: product.img || '',
     });
+  };
+
+  const takePhoto = () => {
+    launchCamera(
+      {
+        mediaType: 'photo',
+        quality: 0.5,
+      },
+      (resp) => {
+        if (resp.didCancel || !resp.assets || !resp.assets[0].uri) {
+          return;
+        }
+        setTempImg(resp.assets[0].uri);
+      },
+    );
   };
 
   const handleSave = async () => {
@@ -85,15 +102,16 @@ const ProductScreen = ({ route, navigation }: Props) => {
         <Picker selectedValue={categoryId} onValueChange={(itemValue) => onChange(itemValue, 'categoryId')}>
           {categoryOptions}
         </Picker>
-        <Button title="Save" onPress={handleSave} color="#5856D6" />
+        <Button title="Save" color="#5856D6" onPress={handleSave} />
         {id.length > 0 && (
           <View style={styles.buttonsContainer}>
-            <Button title="Camera" color="#5856D6" />
+            <Button title="Camera" color="#5856D6" onPress={takePhoto} />
             <View style={{ width: 10 }} />
             <Button title="Gallery" color="#5856D6" />
           </View>
         )}
-        {img.length > 0 && <Image source={{ uri: img }} style={{ width: '100%', height: 300 }} />}
+        {img.length > 0 && !tempImg && <Image source={{ uri: img }} style={{ width: '100%', height: 300 }} />}
+        {tempImg.length > 0 && <Image source={{ uri: tempImg }} style={{ width: '100%', height: 300 }} />}
       </ScrollView>
     </View>
   );
