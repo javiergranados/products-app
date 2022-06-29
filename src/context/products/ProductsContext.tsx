@@ -1,4 +1,6 @@
 import React, { createContext, useEffect, useReducer } from 'react';
+import { Platform } from 'react-native';
+import { ImagePickerResponse } from 'react-native-image-picker';
 import { ProductsState, ProductsContextProps } from './ProductsTypes';
 import { productsReducer } from './ProductsReducer';
 import { Producto, ProductsResponse } from '../../interfaces/products';
@@ -42,7 +44,27 @@ export const ProductsProvider = ({ children }: any) => {
     return response.data;
   };
 
-  const uploadImage = async (productId: string, data: any) => {};
+  const uploadImage = async (productId: string, data: ImagePickerResponse) => {
+    const params = {
+      name: data.assets![0].fileName!,
+      type: data.assets![0].type!,
+      uri: Platform.OS === 'ios' ? data.assets![0].uri!.replace('file://', '') : data.assets![0].uri!,
+    };
+    const fileToUpload = JSON.parse(JSON.stringify(params));
+
+    const formData = new FormData();
+    formData.append('archivo', fileToUpload);
+
+    try {
+      await coffeeApi.put(`/uploads/productos/${productId}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     loadProducts();

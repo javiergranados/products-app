@@ -15,7 +15,7 @@ const ProductScreen = ({ route, navigation }: Props) => {
   const { categories } = useCategories();
   const { id: idFromParams = '', name: nameFromParams = '' } = route.params;
 
-  const { loadProductById, addProduct, updateProduct } = useContext(ProductsContext);
+  const { loadProductById, addProduct, updateProduct, uploadImage } = useContext(ProductsContext);
 
   const [tempImg, setTempImg] = useState<string>('');
   const { id, name, categoryId, img, onChange, setFormValue } = useForm({
@@ -51,6 +51,7 @@ const ProductScreen = ({ route, navigation }: Props) => {
         if (resp.didCancel || !resp.assets || !resp.assets[0].uri) {
           return;
         }
+        uploadImage(id, resp);
         setTempImg(resp.assets[0].uri);
       },
     );

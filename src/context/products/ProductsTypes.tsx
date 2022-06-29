@@ -1,3 +1,4 @@
+import { ImagePickerResponse } from 'react-native-image-picker';
 import { Producto } from '../../interfaces/products';
 
 export interface ProductsState {
@@ -9,7 +10,7 @@ export interface ProductsContextProps extends ProductsState {
   addProduct: (productName: string, categoryId: string) => Promise<Producto>;
   updateProduct: (productId: string, productName: string, categoryId: string) => Promise<Producto>;
   loadProductById: (productId: string) => Promise<Producto>;
-  uploadImage: (productId: string, data: any) => Promise<void>;
+  uploadImage: (productId: string, data: ImagePickerResponse) => Promise<void>;
 }
 
 export type ProductsActions =
