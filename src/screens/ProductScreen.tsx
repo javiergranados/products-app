@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Button, Image, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { Picker } from '@react-native-picker/picker';
-import { launchCamera } from 'react-native-image-picker';
+import { launchCamera, launchImageLibrary, ImagePickerResponse } from 'react-native-image-picker';
 import { ProductsStackParamList } from '../navigators/ProductsNavigator';
 import { ProductsContext } from '../context';
 import { useCategories } from '../hooks/useCategories';
@@ -41,19 +41,31 @@ const ProductScreen = ({ route, navigation }: Props) => {
     });
   };
 
+  const handleImagePickerResponse = (response: ImagePickerResponse) => {
+    if (response.didCancel || !response.assets || !response.assets[0].uri) {
+      return;
+    }
+    uploadImage(id, response);
+    setTempImg(response.assets[0].uri);
+  };
+
   const takePhoto = () => {
     launchCamera(
       {
         mediaType: 'photo',
         quality: 0.5,
       },
-      (resp) => {
-        if (resp.didCancel || !resp.assets || !resp.assets[0].uri) {
-          return;
-        }
-        uploadImage(id, resp);
-        setTempImg(resp.assets[0].uri);
+      handleImagePickerResponse,
+    );
+  };
+
+  const takePhotoFromGallery = () => {
+    launchImageLibrary(
+      {
+        mediaType: 'photo',
+        quality: 0.5,
       },
+      handleImagePickerResponse,
     );
   };
 
@@ -108,7 +120,7 @@ const ProductScreen = ({ route, navigation }: Props) => {
           <View style={styles.buttonsContainer}>
             <Button title="Camera" color="#5856D6" onPress={takePhoto} />
             <View style={{ width: 10 }} />
-            <Button title="Gallery" color="#5856D6" />
+            <Button title="Gallery" color="#5856D6" onPress={takePhotoFromGallery} />
           </View>
         )}
         {img.length > 0 && !tempImg && <Image source={{ uri: img }} style={{ width: '100%', height: 300 }} />}
